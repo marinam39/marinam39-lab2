@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <!-- sourced from a tutorial by mapbox -->
+    <meta charset='utf-8' />
+    <title>Live Street Web Cams in Vancouver</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" crossorigin=""></script>
+
+    <style>
+
+        body {
+            margin: 8;
+            padding: 5;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 55%;
+        }
+
+        /* style popup */
+        .mapboxgl-popup {
+            max-width: 200px;
+        }
+
+        .mapboxgl-popup-content {
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div id='map'></div>
+<div id="web_cam_website" style="position:absolute; top: 0px; left: 1050px; width: 850px; height: 1000px; z-index: 1;"></div>
+
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFyaW5hbTMiLCJhIjoiY2xmdTRoYno2MDA0OTNrbGhpeG9xcWFmciJ9.Wp3dlzOI0j7OIAu7fpH7fQ';
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/marinam3/clfsg2tt0000a01osf2gbrxwe',
+        center: [-123.12, 49.25],
+        zoom: 11.75
+    });
+
+	//content when marker is clicked on
+	var webcamwebsite = document.getElementById("web_cam_website");
+
+    // load geojson data
+
+    map.on('load', function () {
+        map.addSource('my-geojson', {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/marinam39/marinam39-lab2/main/web-cam-url-links.geojson'
+        });
+
+        map.addLayer({
+            id: 'my-layer',
+            type: 'circle',
+            source: 'my-geojson',
+            paint: {
+                'circle-radius': 6,
+                'circle-color': '#A00A0A'
+                
+                
+            }
+        });
+    });
+
+    // add popup for each marker
+            map.on('click', 'my-layer', function(e) {
+                const feature = e.features[0];
+	webcamwebsite.innerHTML = "<iframe src=\""+feature.properties.url+"\"</iframe>"
+     });
+
+            // change the cursor to a pointer when the mouse is over the places layer
+            map.on('mouseenter', 'my-layer', function() {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // change it back to a pointer when it leaves
+            map.on('mouseleave', 'my-layer', function() {
+            });
+
+</script>
+</body>
+</html>
+
+
+
