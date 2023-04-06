@@ -76,7 +76,7 @@
     // when the marker is clicked, display the web cam website embedded in the map website
             map.on('click', 'my-layer', function(e) {
                 const feature = e.features[0];
-	webcamwebsite.innerHTML = "<iframe src=\""+feature.properties.url+"\"</iframe>"
+	webcamwebsite.innerHTML = "<iframe src=\""+feature.properties.url+"\" style='width:100%; height:100%;'</iframe>"
      });
 
             // change the cursor to a pointer when the mouse is over the places layer
