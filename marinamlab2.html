@@ -11,44 +11,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" crossorigin=""></script>
 
     <style>
-
         body {
             margin: 8;
             padding: 5;
         }
-
         #map {
             position: absolute;
             top: 0;
             bottom: 0;
             width: 55%;
         }
-
         /* style popup */
         .mapboxgl-popup {
             max-width: 200px;
         }
-
         .mapboxgl-popup-content {
             text-align: center;
             font-family: 'Open Sans', sans-serif;
         }
-
     </style>
 
 </head>
 
 <body>
 
-
-
 <div id='map'></div>
+	 <!-- from prof. bergmann's office hours  -->
 <div id="web_cam_website" style="position:absolute; top: 0px; left: 1050px; width: 850px; height: 1000px; z-index: 1;"></div>
 
 <script>
 
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFyaW5hbTMiLCJhIjoiY2xmdTRoYno2MDA0OTNrbGhpeG9xcWFmciJ9.Wp3dlzOI0j7OIAu7fpH7fQ';
-
+    //load map style
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/marinam3/clfsg2tt0000a01osf2gbrxwe',
@@ -59,14 +53,13 @@
 	//content when marker is clicked on
 	var webcamwebsite = document.getElementById("web_cam_website");
 
-    // load geojson data
-
+    // load geojson data, data from vancouver open data portal
     map.on('load', function () {
         map.addSource('my-geojson', {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/marinam39/marinam39-lab2/main/web-cam-url-links.geojson'
         });
-
+        //markers for each camera
         map.addLayer({
             id: 'my-layer',
             type: 'circle',
@@ -80,7 +73,7 @@
         });
     });
 
-    // add popup for each marker
+    // when the marker is clicked, display the web cam website embedded in the map website
             map.on('click', 'my-layer', function(e) {
                 const feature = e.features[0];
 	webcamwebsite.innerHTML = "<iframe src=\""+feature.properties.url+"\"</iframe>"
